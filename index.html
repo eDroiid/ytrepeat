@@ -1,2 +1,70 @@
 <html>
+  <head>
+    <title>YouTube Repeat</title>
+    <style>
+      body {
+        background: black;
+        color: white;
+        margin-top: 25px;
+      }
+
+      span {
+        font-family: monospace;
+      }
+
+      span#title {
+        font-size: 30px;
+      }
+
+      input {
+        width: 44%;
+        height: 26px;
+        padding-left: 10px;
+        border: none;
+      }
+
+      button {
+        width: 12%;
+        height: 26px;
+        background: #ddd;
+        border: none;
+      }
+
+      iframe {
+        border: 1px solid #ccc;
+        width: 460px;
+        height: 225px;
+      }
+    </style>
+  </head>
+  <body>
+    <div align="center">
+      <span id="title">YouTube Repeat</span>
+      <br>
+      <form onsubmit="run(this);return false;">
+        <input type="text" name="url" placeholder="YouTube Link / Video Id"><button type="submit">Go</button>
+      </form>
+      <br><br>
+      <iframe id="vid" src="" onload="if(this.getAttribute('src')!=''){this.style.border='1px solid #fff';}" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <script>
+      function run(form){
+        vid.style.border='1px solid #ccc';
+        var url = form["url"].value;
+        var id = null;
+        if(/^[a-zA-Z0-9_-]{11}$/.test(url)){
+          id = url;
+        }else if(url.indexOf("www.youtube.com") !== -1 && url.indexOf("v=") !== -1){
+          id = url.substr(url.indexOf("v="), 13).split("=")[1];
+        }else if(url.indexOf("youtu.be")){
+          id = url.replace(/http(|s):\/\/youtu\.be\//, "").substr(0, 11);
+        }
+        if(id === null || !(/^[a-zA-Z0-9_-]{11}$/.test(id))){
+          alert("Invalid Url!");
+          return;
+        }
+        vid.src = "https://www.youtube-nocookie.com/embed/"+id+"?autoplay=1&loop=1&playlist="+id+"&showinfo=0";
+      }
+    </script>
+  </body>
 </html>
